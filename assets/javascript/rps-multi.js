@@ -15,6 +15,7 @@
 //  is there a timer?
 //  is there a chat app
 
+//  dbconfig
 var config = {
   apiKey: "AIzaSyDnH8rHXPVRXREfAZd6fltrfQDvliOScV8",
   authDomain: "rps-multiplayer-c3f4a.firebaseapp.com",
@@ -25,11 +26,13 @@ var config = {
 };
 firebase.initializeApp(config);
 
+//  establish db
 var database = firebase.database();
 
 var wins = 0;
 var losses = 0;
 
+//  get DOM ready for clicks
 $(document).ready(function(){
 
   $('#playerName').click(function() {
@@ -39,30 +42,26 @@ $(document).ready(function(){
   //  Enter Player Name
   $('#submit').click(function(event){
     event.preventDefault();
-
     var playerName = $('#playerName').val().trim();
-
     var playerInfo = {
       name: playerName
     };
-
     //  set playerInfo
-    database.ref().set(playerInfo);
-    
+    database.ref().set(playerInfo);  
     $('#playerName').val('');
 
-  });
     
   //  write player name to db and DOM
   database.ref().on("value", function(snapshot){
     console.log(snapshot);
     var playerName = snapshot.val().name;
     console.log(playerName);
-    $('#playerInfo').empty();
-    $('#playerInfo').append(`<h1>${playerName}</h1>`);
-
+    $('.playerInfo').empty();
+    //  $('#playerID').html(playerName);
+    $('.playerInfo').append(`<h1>${playerName}</h1>`);
     }, function(errorObject) {
      console.log("The read failed: " + errorObject.code);
   });
+});
 
 });
