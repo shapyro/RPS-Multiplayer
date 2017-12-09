@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+  text-align: center;
+}
+body {
+  background: orange;
+  width: 960px;
+  margin: 0 auto;
+}
+header {
+  /* font-family: 'Atomic Age'; */
+  font-size: 35px;
+  background: black;
+  color: white;
+  margin: 0 20px 0 20px;
+  padding: 20px;
+}
+.wrapper {
+  background: fuchsia;
+  margin: 0 20px 0 20px;
+}
+.selection {
+  height: 200px;
+  margin: 0 20px 0 20px;
+}
+#rock {
+  float: left;
+  height: 50px;
+  width: 50px;
+  background: purple;
+  margin: 8% 10% 0% 25%;
+}
+#paper {
+  float: left;
+  height: 50px;
+  width: 50px;
+  background: purple;
+  margin: 8%;
+}
+#scissors {
+  float: left;
+  height: 50px;
+  width: 50px;
+  background: purple;
+  margin: 8%;
+}
+.info {
+  margin: 10px;
+}
+.playerInfo {
+  margin: 100px 0 10px 0;
+}
+#playerID {
+  width: 200px;
+  position: relative;
+  left: 39%;
+  background: pink;
+}
+#playerName {
+  margin: 10px;
+}
+#submit {
+  margin: 10px;
+}
