@@ -25,36 +25,33 @@ header {
 }
 #rock {
   float: left;
-  height: 50px;
-  width: 50px;
-  background: purple;
-  margin: 8% 10% 0% 25%;
+  height: 200px;
+  width: 200px;
+  margin: 1% 5% 0% 5%;
 }
 #paper {
   float: left;
-  height: 50px;
-  width: 50px;
-  background: purple;
-  margin: 8%;
+  height: 200px;
+  width: 200px;
+  margin: 0% 4% 1% 4%;
 }
 #scissors {
   float: left;
-  height: 50px;
-  width: 50px;
-  background: purple;
-  margin: 8%;
+  height: 200px;
+  width: 200px;
+  margin: 0 0 0 10%;
 }
 .info {
   margin: 10px;
 }
 .playerInfo {
-  margin: 100px 0 10px 0;
+  background: yellow;
 }
 #playerID {
   width: 200px;
   position: relative;
   left: 39%;
-  background: pink;
+  /* background: pink; */
 }
 #playerName {
   margin: 10px;
