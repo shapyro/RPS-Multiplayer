@@ -31,6 +31,9 @@ var database = firebase.database();
 
 var wins = 0;
 var losses = 0;
+var num_players = 2;
+//  var playerName;
+var playerList = [];
 
 //  get DOM ready for clicks
 $(document).ready(function(){
@@ -42,26 +45,30 @@ $(document).ready(function(){
   //  Enter Player Name
   $('#submit').click(function(event){
     event.preventDefault();
+    if (playerList.length <= 2){
+
     var playerName = $('#playerName').val().trim();
     var playerInfo = {
-      name: playerName
+      name: playerName,
     };
+    
     //  set playerInfo
-    database.ref().set(playerInfo);  
+    //  Array maybe in firebase?
+    database.ref().push(playerInfo);  
     $('#playerName').val('');
 
-    
-  //  write player name to db and DOM
-  database.ref().on("value", function(snapshot){
-    console.log(snapshot);
-    var playerName = snapshot.val().name;
-    console.log(playerName);
+  database.ref().on("child_added", function(childSnapshot, prevChildKey){
+    console.log(childSnapshot.key);
+    console.log(childSnapshot.val());
+    // console.log(childSnapshot.key());
+    var playerName = childSnapshot.val().name;// .name;
+
     $('.playerInfo').empty();
-    //  $('#playerID').html(playerName);
     $('.playerInfo').append(`<h1>${playerName}</h1>`);
     }, function(errorObject) {
      console.log("The read failed: " + errorObject.code);
   });
+  };
 });
 
 });
