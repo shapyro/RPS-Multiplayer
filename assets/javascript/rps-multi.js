@@ -1,3 +1,4 @@
+
 //  enter username
 //    write to Firebase
 //    write to DOM
@@ -20,24 +21,21 @@ $(document).ready(function(){
 
   //  dbconfig
   var config = {
-    apiKey: "AIzaSyDnH8rHXPVRXREfAZd6fltrfQDvliOScV8",
-    authDomain: "rps-multiplayer-c3f4a.firebaseapp.com",
-    databaseURL: "https://rps-multiplayer-c3f4a.firebaseio.com",
-    projectId: "rps-multiplayer-c3f4a",
-    storageBucket: "rps-multiplayer-c3f4a.appspot.com",
-    messagingSenderId: "334508367375"
+    apiKey: "AIzaSyBcYypDm_8zwvKXYzCacsL05Bw1wevMktI",
+    authDomain: "rps-round2.firebaseapp.com",
+    databaseURL: "https://rps-round2.firebaseio.com",
+    projectId: "rps-round2",
+    storageBucket: "rps-round2.appspot.com",
+    messagingSenderId: "491313456890"
   };
   firebase.initializeApp(config);
 
   //  establish db
   var database = firebase.database();
-  // var chats = database.ref("chat");
-  var connections = database.ref("/connected");
+  var gameroom = database.ref("/gameroom");
 
-  // '.info/connected' is a special location provided by Firebase that is updated every time
-  // the client's connection state changes.
-  // '.info/connected' is a boolean value, true if the client is connected and false if they are not.
-  // var connectedRef = database.ref(".info/connected");
+  var uid = [];
+  playerCount = 0;
 
   var player = {
     number: '0',
@@ -47,25 +45,24 @@ $(document).ready(function(){
     choice: ''
   }
 
-  var opponent = {
-    number: '0',
-    name: '',
-    wins: '0',
-    losses: '0',
-    choice: ''
-  }
+  // var opponent = {
+  //   number: '0',
+  //   name: '',
+  //   wins: '0',
+  //   losses: '0',
+  //   choice: ''
+  // }
 
   $('#playerName').click(function() {
     $('#playerName').val('');
   });
 
   $('#submit').click(function(event){
-
       //  take player name from input
       player.name = $('#playerName').val().trim();
-      player.number = number
+      // console.log(uid);
       //  set player info in datbase
-      database.ref("/gameroom").push(player);  
+      gameroom.child(player.name).set(player); 
       $('.playerInfo').empty();
       $('.playerInfo').append(`<div id='player'>${player.name}</div>`)
   
@@ -75,25 +72,38 @@ $(document).ready(function(){
     // database.ref().push(opponent);  
     // $('.playerInfo').empty();
     // $('.playerInfo').append(`<div id='opponent'>${opponent.name}</div>`);
+  });
 
-
-    database.ref("/gameroom").on("child_added", function(childSnapshot){
+    //  pull data from gameroom
+    gameroom.on("child_added", function(childSnapshot){
       player.name = childSnapshot.val().name;
+      console.log(player.name);
       console.log(childSnapshot.key);
-      // console.log(childSnapshot.key().name);
+      
     }, function(errorObject) {
     console.log("The read failed: " + errorObject.code);
     });
 
-  });
 
-  $('#resetDB').on('click', function(){
-    clearDB();
-  })
+    gameroom.on("value", function(snapshot){
+      // console.log(player);
+      console.log(snapshot.key);
+      console.log(snapshot.val());
+      // console.log(snapshot.val();
+      // uid.push(snapshot.key);
+    }, function(errorObject) {
+    console.log("The read failed: " + errorObject.code);
+    });
 
-  function clearDB(){
-    database.remove(childSnapshot);
-    // database.childSnapshot.key.remove();
-  }
+  
+
+  // $('#resetDB').on('click', function(){
+  //   clearDB();
+  // })
+
+  // function clearDB(){
+  //   database.remove(childSnapshot);
+  //   // database.childSnapshot.key.remove();
+  // }
 
 });
