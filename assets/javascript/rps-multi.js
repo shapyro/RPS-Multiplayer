@@ -95,15 +95,4 @@ $(document).ready(function(){
     console.log("The read failed: " + errorObject.code);
     });
 
-  
-
-  // $('#resetDB').on('click', function(){
-  //   clearDB();
-  // })
-
-  // function clearDB(){
-  //   database.remove(childSnapshot);
-  //   // database.childSnapshot.key.remove();
-  // }
-
 });
