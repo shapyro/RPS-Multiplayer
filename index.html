@@ -8,27 +8,30 @@
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
-    <script type="text/javascript" src="assets/javascript/rps-multi.js"></script>
     <link href="assets/css/reset.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="assets/javascript/rps-multi.js"></script>
   </head>
   <body>
   
     <header>Rock Paper Scissors</header>
     <div class="wrapper">
       <div class="selection">
-          <div id="rock">R</div>
-          <div id="paper">P</div>
-          <div id="scissors">S</div>
+          <img id="rock" src="assets/images/rock.png" value="r">
+          <img id="paper" src="assets/images/toilet paper.png" value="p">
+          <img id="scissors" src="assets/images/scissors.png" value="s">
       </div>
-      <div class="playerInfo">
-        <div id="playerID">Player Information</div>
-        <form class="info">
-          <input id="playerName" type="text" name="playerName" value="name">
-          <input id="submit" type="submit" value="enter">
-        </form>
-      </div>
-    </div>  
-
+    </div>    
+  
+    <div class="playerInfo">
+      <div id="playerID">Player Information</div>
+      <form class="info">
+        <input id="playerName" type="text" name="playerName" value="name">
+        <input id="submit" type="submit" value="enter">
+      </form>
+    </div>
+    
+    <div id="resetDB">resetDB</div>
+      
   </body>
 </html>

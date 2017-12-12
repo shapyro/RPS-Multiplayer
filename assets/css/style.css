@@ -44,9 +44,10 @@ header {
 .info {
   margin: 10px;
 }
-.playerInfo {
+/* .playerInfo {
   background: yellow;
-}
+  height: 10%;
+} */
 #playerID {
   width: 200px;
   position: relative;
@@ -58,4 +59,26 @@ header {
 }
 #submit {
   margin: 10px;
+}
+
+#player {
+  position: relative;
+  top: 20%;
+  width: 20%;
+  left: 10%;
+  color: white;
+}
+#opponent {
+  position: relative;
+  top: 20%;
+  width: 20%;
+  right: 10%;
+  color: white;
+}
+
+#resetDB {
+  height: 100px;
+  width: 100px;
+  color: white;
+  background: red;
 }
