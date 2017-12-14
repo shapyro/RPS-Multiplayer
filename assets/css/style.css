@@ -41,17 +41,25 @@ header {
   width: 200px;
   margin: 0 0 0 10%;
 }
-.info {
-  margin: 10px;
+.playerInfo {
+  background: burlywood;
+  margin: 0 20px 0 20px;
+  padding: 30px; 
+  height: 400px;
 }
+/* .info {
+  margin: 10px;
+} */
 /* .playerInfo {
   background: yellow;
   height: 10%;
 } */
 #playerID {
+  float: left;
+  /* background: yellow; */
   width: 200px;
-  position: relative;
-  left: 39%;
+  /* position: relative; */
+  /* left: 39%; */
   /* background: pink; */
 }
 #playerName {
@@ -61,24 +69,31 @@ header {
   margin: 10px;
 }
 
-#player {
-  position: relative;
-  top: 20%;
+#player1 {
+  /* position: relative; */
+  float: left;
+  margin: 0 0 0 18%;
+  padding: 10px;
+  height: 200px;
   width: 20%;
   left: 10%;
   color: white;
-}
-#opponent {
-  position: relative;
-  top: 20%;
-  width: 20%;
-  right: 10%;
-  color: white;
+  background: grey;
 }
 
-#resetDB {
+#player2 {
+  float: left;
+  height: 200px;
+  padding: 10px;
+  width: 20%;
+  left: 10%;
+  color: white;
+  background: grey;
+}
+
+/* #resetDB {
   height: 100px;
   width: 100px;
   color: white;
   background: red;
-}
+} */
