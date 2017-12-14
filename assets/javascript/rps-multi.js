@@ -34,9 +34,11 @@ $(document).ready(function(){
   var database = firebase.database();
   var gameroom = database.ref("/gameroom");
 
-  var uid = [];
-  var playerCount = 0;
-  var uidNode = [];
+  var uidArray = [];
+  // var playerCount = 0;
+  var playerNode = [];
+  var player1;
+  var player2;
 
   var player = {
     number: '0',
@@ -56,23 +58,16 @@ $(document).ready(function(){
       // console.log(uid);
       //  set player info in datbase
       gameroom.child(player.name).set(player); 
-      $('.playerInfo').empty();
-      $('.playerInfo').append(`<div id='player'>${player.name}</div>`)
-  
-    // opponent.name = $('#playerName').val().trim();
-    // //  set opponent info in datbase
-    // database.ref().push(opponent);  
-    // $('.playerInfo').empty();
-    // $('.playerInfo').append(`<div id='opponent'>${opponent.name}</div>`);
   });
 
-    //  pull data from gameroom
+    //  load data from gameroom
     // gameroom.on("child_added", function(childSnapshot){
-    //   player.name = childSnapshot.val().name;
+    //   //  player.name = childSnapshot.val().name;
     //   // console.log(childSnapshot.val());
     //   // console.log(childSnapshot.key);
     //   uid.push(childSnapshot.val().name);
-    //   console.log(uid);
+    //   uidNode.push(childSnapshot.val());
+    //   // console.log(uid);
     //   player1 = uid[0];
     //   player2 = uid[1];
     // }, function(errorObject) {
@@ -82,12 +77,35 @@ $(document).ready(function(){
     //  checking for player1 and player2
     gameroom.on("value", function(snapshot){
       snapshot.forEach(function(childSnapshot){
-        console.log(childSnapshot.val());
-        console.log(childSnapshot.val().name);
-        console.log(childSnapshot.val().wins);
+        // console.log(childSnapshot.val());
+        // console.log(childSnapshot.val().name);
+        // console.log(childSnapshot.val().wins);
+        let player = childSnapshot.val();
+        // uid.key = childSnapshot.key;
+        playerNode.push(player);
+        // console.log(uid);
+        // console.log(uidArray);
+        // uidNode.push(childSnapshot.val());
+        // console.log(uidNode);
+        // console.log(uidNode[0]);
+        // console.log(uidNode[1]);
+        // if (childSnapshot.val().name = player1){
+        //   console.log(childSnapshot.val());
+        //   console.log(childSnapshot.val().name);
+        //   console.log(childSnapshot.val().wins);
+        // }
       });
+      for (i=0; i < playerNode.length; i++) {
+        console.log(playerNode[i]);
+        // counts.push(keys[i].wordcount);
+    }   
+
     }, function(errorObject) {
     console.log("The read failed: " + errorObject.code);
     });
 
 });
+
+
+// $('.playerInfo').empty();
+// $('.playerInfo').append(`<div id='player'>${player.name}</div>`)
