@@ -35,7 +35,8 @@ $(document).ready(function(){
   var gameroom = database.ref("/gameroom");
 
   var uid = [];
-  playerCount = 0;
+  var playerCount = 0;
+  var uidNode = [];
 
   var player = {
     number: '0',
@@ -44,14 +45,6 @@ $(document).ready(function(){
     losses: '0',
     choice: ''
   }
-
-  // var opponent = {
-  //   number: '0',
-  //   name: '',
-  //   wins: '0',
-  //   losses: '0',
-  //   choice: ''
-  // }
 
   $('#playerName').click(function() {
     $('#playerName').val('');
@@ -66,7 +59,6 @@ $(document).ready(function(){
       $('.playerInfo').empty();
       $('.playerInfo').append(`<div id='player'>${player.name}</div>`)
   
-  
     // opponent.name = $('#playerName').val().trim();
     // //  set opponent info in datbase
     // database.ref().push(opponent);  
@@ -75,22 +67,25 @@ $(document).ready(function(){
   });
 
     //  pull data from gameroom
-    gameroom.on("child_added", function(childSnapshot){
-      player.name = childSnapshot.val().name;
-      console.log(player.name);
-      console.log(childSnapshot.key);
-      
-    }, function(errorObject) {
-    console.log("The read failed: " + errorObject.code);
-    });
+    // gameroom.on("child_added", function(childSnapshot){
+    //   player.name = childSnapshot.val().name;
+    //   // console.log(childSnapshot.val());
+    //   // console.log(childSnapshot.key);
+    //   uid.push(childSnapshot.val().name);
+    //   console.log(uid);
+    //   player1 = uid[0];
+    //   player2 = uid[1];
+    // }, function(errorObject) {
+    // console.log("The read failed: " + errorObject.code);
+    // });
 
-
+    //  checking for player1 and player2
     gameroom.on("value", function(snapshot){
-      // console.log(player);
-      console.log(snapshot.key);
-      console.log(snapshot.val());
-      // console.log(snapshot.val();
-      // uid.push(snapshot.key);
+      snapshot.forEach(function(childSnapshot){
+        console.log(childSnapshot.val());
+        console.log(childSnapshot.val().name);
+        console.log(childSnapshot.val().wins);
+      });
     }, function(errorObject) {
     console.log("The read failed: " + errorObject.code);
     });
