@@ -43,6 +43,8 @@ $(document).ready(function(){
   var player2;
 
   var player = {
+    opponent: '',
+    uid: '',
     number: '',
     name: '',
     wins: '0',
@@ -50,33 +52,6 @@ $(document).ready(function(){
     choice: ''
   }
 
-  // connections
-  connectedRef.on("value", function(snap){
-    if (snap.val()) {
-      
-          // Add user to the connections list.
-          var con = connectionsRef.push(true);
-          console.log(snap.key);
-          
-          // Remove user from the connection list when they disconnect.
-          con.onDisconnect().remove();
-
-        }
-  })
-
-  connectionsRef.on("value", function(snap) {
-    console.log(snap.numChildren())
-    playerCount = snap.numChildren();
-    console.log(playerCount);
-    // console.log(snap.key);
-    // uidArray.push(snap.key);
-    
-  });
-
-  connectionsRef.on("child_added", function(snap) {
-    console.log(snap.key);
-    
-  });
     
   $('#playerName').click(function() {
     $('#playerName').val('');
@@ -85,6 +60,55 @@ $(document).ready(function(){
   //  add player
   $('#submit').click(function(event){
     event.preventDefault();
+
+    firebase.auth().signInAnonymously().then(function (data){
+      console.log("signed in");
+      // console.log(data);
+      player.uid = data.uid;
+      player.name = $('#playerName').val().trim();
+      gameroom.orderByChild('opponent').once("value", function(snap){
+        console.log(snap.val()[0]);
+        //  iterate through data
+        //  check each player for opponent
+        //  if any player has no opponent, then input current player's uid
+        //    player.opponent = this uid
+        //  exit loop once player is found
+        gameroom.push(player);
+      })
+      
+
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+      // connections
+  // connectedRef.on("value", function(snap){
+  //   if (snap.val()) {
+      
+  //         // Add user to the connections list.
+  //         var con = connectionsRef.push(true);
+  //         console.log(snap.key);
+          
+  //         // Remove user from the connection list when they disconnect.
+  //         con.onDisconnect().remove();
+
+  //       }
+  // })
+
+  connectionsRef.on("value", function(snap) {
+    // console.log(snap.numChildren())
+    playerCount = snap.numChildren();
+    // console.log(playerCount);
+    // console.log(snap.key);
+    // uidArray.push(snap.key);
+    
+  });
+
+  connectionsRef.on("child_added", function(snap) {
+    // console.log(snap.key);
+  });
     //  take player name from input
     player.name = $('#playerName').val().trim();
     //  set player info in datbase
@@ -99,6 +123,18 @@ $(document).ready(function(){
     }
   });
 
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      console.log("UID: " + uid);
+      // ...
+    } else {
+      // User is signed out.
+      console.log("signed out");
+    }
+    // ...
+  });
   //  show game is in session if two players
   // if ($('#player2info').length){
   //   $("#playerID").empty();
@@ -108,33 +144,32 @@ $(document).ready(function(){
   //  checking for player1 and player2
   gameroom.on("value", function(snapshot){
 
-
-  if (snapshot.child("player1").exists()){
-    console.log(snapshot.val().player1);
-    player1 = snapshot.val().player1;
-    if ($('#player1info').length){
-      $('#player1').html(`<div id='player1info'>${player1.name}</div>`)
-      $('#player1').html(`<div id='player1info'>${player1.wins}</div>`)
-      $('#player1').html(`<div id='player1info'>${player1.losses}</div>`)
-    } else{
-      $('#player1').append(`<div id='player1info'>${player1.name}</div>`)
-      $('#player1').append(`<div id='player1info'>${player1.wins}</div>`)
-      $('#player1').append(`<div id='player1info'>${player1.losses}</div>`)
+    if (snapshot.child("player1").exists()){
+      console.log(snapshot.val().player1);
+      player1 = snapshot.val().player1;
+      if ($('#player1info').length){
+        $('#player1').html(`<div id='player1info'>${player1.name}</div>`)
+        $('#player1').html(`<div id='player1info'>${player1.wins}</div>`)
+        $('#player1').html(`<div id='player1info'>${player1.losses}</div>`)
+      } else{
+        $('#player1').append(`<div id='player1info'>${player1.name}</div>`)
+        $('#player1').append(`<div id='player1info'>${player1.wins}</div>`)
+        $('#player1').append(`<div id='player1info'>${player1.losses}</div>`)
+      }
     }
-  }
-  if (snapshot.child("player2").exists()){
-    console.log(snapshot.val().player2);
-    player2 = snapshot.val().player2;
-    if ($('#player2info').length){
-      $('#player2').html(`<div id='player1info'>${player2.name}</div>`)
-      $('#player2').html(`<div id='player1info'>${player2.wins}</div>`)
-      $('#player2').html(`<div id='player1info'>${player2.losses}</div>`)
-    } else{
-      $('#player2').append(`<div id='player2info'>${player2.name}</div>`)
-      $('#player2').append(`<div id='player2info'>${player2.wins}</div>`)
-      $('#player2').append(`<div id='player2info'>${player2.losses}</div>`)
+    if (snapshot.child("player2").exists()){
+      console.log(snapshot.val().player2);
+      player2 = snapshot.val().player2;
+      if ($('#player2info').length){
+        $('#player2').html(`<div id='player1info'>${player2.name}</div>`)
+        $('#player2').html(`<div id='player1info'>${player2.wins}</div>`)
+        $('#player2').html(`<div id='player1info'>${player2.losses}</div>`)
+      } else{
+        $('#player2').append(`<div id='player2info'>${player2.name}</div>`)
+        $('#player2').append(`<div id='player2info'>${player2.wins}</div>`)
+        $('#player2').append(`<div id='player2info'>${player2.losses}</div>`)
+      }
     }
-  }
                   
   });
   
