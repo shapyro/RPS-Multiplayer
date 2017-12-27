@@ -61,6 +61,7 @@ $(document).ready(function(){
   $('#submit').click(function(event){
     event.preventDefault();
 
+    
     firebase.auth().signInAnonymously().then(function (data){
       console.log("signed in");
       // console.log(data);
@@ -72,10 +73,11 @@ $(document).ready(function(){
         //  check each player for opponent
         //  if any player has no opponent, then input current player's uid
         //    player.opponent = this uid
-        //  exit loop once player is found
+        //  exit loop once player is found (break)
+      
         gameroom.push(player);
       })
-      
+      gameroom.push(player);
 
     }).catch(function(error) {
       // Handle Errors here.
@@ -97,31 +99,31 @@ $(document).ready(function(){
   //       }
   // })
 
-  connectionsRef.on("value", function(snap) {
-    // console.log(snap.numChildren())
-    playerCount = snap.numChildren();
-    // console.log(playerCount);
-    // console.log(snap.key);
-    // uidArray.push(snap.key);
+  // connectionsRef.on("value", function(snap) {
+  //   // console.log(snap.numChildren())
+  //   playerCount = snap.numChildren();
+  //   // console.log(playerCount);
+  //   // console.log(snap.key);
+  //   // uidArray.push(snap.key);
     
-  });
+  // });
 
-  connectionsRef.on("child_added", function(snap) {
-    // console.log(snap.key);
-  });
-    //  take player name from input
-    player.name = $('#playerName').val().trim();
-    //  set player info in datbase
-    if (playerCount === 1){
-      player.number = 1;
-      // player.key = uidArray[0];
-      gameroom.child("player1").set(player); 
-    } else {
-      player.number = 2;
-      // player.key = uidArray[1];
-      gameroom.child("player2").set(player);
-    }
-  });
+  // connectionsRef.on("child_added", function(snap) {
+  //   // console.log(snap.key);
+  // });
+  //   //  take player name from input
+  //   player.name = $('#playerName').val().trim();
+  //   //  set player info in datbase
+  //   if (playerCount === 1){
+  //     player.number = 1;
+  //     // player.key = uidArray[0];
+  //     gameroom.child("player1").set(player); 
+  //   } else {
+  //     player.number = 2;
+  //     // player.key = uidArray[1];
+  //     gameroom.child("player2").set(player);
+  //   }
+  // });
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
@@ -142,34 +144,34 @@ $(document).ready(function(){
   // }
 
   //  checking for player1 and player2
-  gameroom.on("value", function(snapshot){
+  // gameroom.on("value", function(snapshot){
 
-    if (snapshot.child("player1").exists()){
-      console.log(snapshot.val().player1);
-      player1 = snapshot.val().player1;
-      if ($('#player1info').length){
-        $('#player1').html(`<div id='player1info'>${player1.name}</div>`)
-        $('#player1').html(`<div id='player1info'>${player1.wins}</div>`)
-        $('#player1').html(`<div id='player1info'>${player1.losses}</div>`)
-      } else{
-        $('#player1').append(`<div id='player1info'>${player1.name}</div>`)
-        $('#player1').append(`<div id='player1info'>${player1.wins}</div>`)
-        $('#player1').append(`<div id='player1info'>${player1.losses}</div>`)
-      }
-    }
-    if (snapshot.child("player2").exists()){
-      console.log(snapshot.val().player2);
-      player2 = snapshot.val().player2;
-      if ($('#player2info').length){
-        $('#player2').html(`<div id='player1info'>${player2.name}</div>`)
-        $('#player2').html(`<div id='player1info'>${player2.wins}</div>`)
-        $('#player2').html(`<div id='player1info'>${player2.losses}</div>`)
-      } else{
-        $('#player2').append(`<div id='player2info'>${player2.name}</div>`)
-        $('#player2').append(`<div id='player2info'>${player2.wins}</div>`)
-        $('#player2').append(`<div id='player2info'>${player2.losses}</div>`)
-      }
-    }
+  //   if (snapshot.child("player1").exists()){
+  //     console.log(snapshot.val().player1);
+  //     player1 = snapshot.val().player1;
+  //     if ($('#player1info').length){
+  //       $('#player1').html(`<div id='player1info'>${player1.name}</div>`)
+  //       $('#player1').html(`<div id='player1info'>${player1.wins}</div>`)
+  //       $('#player1').html(`<div id='player1info'>${player1.losses}</div>`)
+  //     } else{
+  //       $('#player1').append(`<div id='player1info'>${player1.name}</div>`)
+  //       $('#player1').append(`<div id='player1info'>${player1.wins}</div>`)
+  //       $('#player1').append(`<div id='player1info'>${player1.losses}</div>`)
+  //     }
+  //   }
+  //   if (snapshot.child("player2").exists()){
+  //     console.log(snapshot.val().player2);
+  //     player2 = snapshot.val().player2;
+  //     if ($('#player2info').length){
+  //       $('#player2').html(`<div id='player1info'>${player2.name}</div>`)
+  //       $('#player2').html(`<div id='player1info'>${player2.wins}</div>`)
+  //       $('#player2').html(`<div id='player1info'>${player2.losses}</div>`)
+  //     } else{
+  //       $('#player2').append(`<div id='player2info'>${player2.name}</div>`)
+  //       $('#player2').append(`<div id='player2info'>${player2.wins}</div>`)
+  //       $('#player2').append(`<div id='player2info'>${player2.losses}</div>`)
+  //     }
+  //   }
                   
   });
   
