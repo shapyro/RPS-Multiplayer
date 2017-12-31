@@ -60,24 +60,15 @@ $(document).ready(function(){
   //  add player
   $('#submit').click(function(event){
     event.preventDefault();
+    // $('#playerName').val('');
 
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE).then(function() {
+
+    return firebase.auth().signInAnonymously()})
     
-    firebase.auth().signInAnonymously().then(function (data){
-      console.log("signed in");
+    .then(function (data){
+      // console.log("signed in");
       // console.log(data);
-      player.uid = data.uid;
-      player.name = $('#playerName').val().trim();
-      gameroom.orderByChild('opponent').once("value", function(snap){
-        console.log(snap.val()[0]);
-        //  iterate through data
-        //  check each player for opponent
-        //  if any player has no opponent, then input current player's uid
-        //    player.opponent = this uid
-        //  exit loop once player is found (break)
-      
-        gameroom.push(player);
-      })
-      gameroom.push(player);
 
     }).catch(function(error) {
       // Handle Errors here.
@@ -85,19 +76,37 @@ $(document).ready(function(){
       var errorMessage = error.message;
       // ...
     });
-      // connections
-  // connectedRef.on("value", function(snap){
-  //   if (snap.val()) {
-      
-  //         // Add user to the connections list.
-  //         var con = connectionsRef.push(true);
-  //         console.log(snap.key);
-          
-  //         // Remove user from the connection list when they disconnect.
-  //         con.onDisconnect().remove();
+  });
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+    // return firebase.auth().signInWithEmailAndPassword(email, password);
 
-  //       }
+
   // })
+  // .catch(function(error) {
+  //   // Handle Errors here.
+  //   var errorCode = error.code;
+  //   var errorMessage = error.message;
+  // });
+
+    
+
+    //  connections
+  connectedRef.on("value", function(snap){
+    if (snap.val()) {
+      
+          // Add user to the connections list.
+          var con = connectionsRef.push(true);
+          // console.log(snap.key);
+          
+          // Remove user from the connection list when they disconnect.
+          con.onDisconnect().remove();
+
+        }
+  });
 
   // connectionsRef.on("value", function(snap) {
   //   // console.log(snap.numChildren())
@@ -129,7 +138,55 @@ $(document).ready(function(){
     if (user) {
       var isAnonymous = user.isAnonymous;
       var uid = user.uid;
-      console.log("UID: " + uid);
+      // console.log("UID: " + uid);
+      // console.log(user);
+      player.uid = uid;
+      player.name = $('#playerName').val().trim();
+      gameroom.push(player);
+      gameroom.orderByChild("opponent").on("value", function(snap){
+          
+          console.log(snap.val());
+          console.log(Object.keys(snap.val()).length);
+          console.log(Object.keys(snap.val()));
+          for (key in snap.val()) {
+            // console.log(snap.val()[player]);
+            var player = snap.val()[key];
+            var opponent;
+            console.log(player);
+            console.log(player.opponent);
+
+            if (player.opponent === "" && player.uid !== user.uid) {
+              // player.opponent = this.uid;
+              player.opponent = user.uid;
+              console.log (player);
+              // gameroom.set(player);
+            } 
+            if (user.uid === player.opponent) {
+              // player.opponent = player.uid
+              console.log(player)
+              console.log(player.uid)
+              opponent = player.uid;
+              console.log(opponent)
+            }
+            if (user.uid === player.uid) {
+              player.opponent = opponent;
+              console.log(player);
+            }
+
+          }
+    
+            
+          //   console.log(snap.val());
+          // }
+          //  iterate through data
+          //  check each player for opponent
+          //  if any player has no opponent, then input current player's uid
+          //    player.opponent = this uid
+          //  exit loop once player is found (break)
+        
+          //  condition before adding player
+          //  gameroom.push(player);
+        });
       // ...
     } else {
       // User is signed out.
@@ -137,42 +194,16 @@ $(document).ready(function(){
     }
     // ...
   });
-  //  show game is in session if two players
-  // if ($('#player2info').length){
-  //   $("#playerID").empty();
-  //   $("#playerID").append("<div id='session'>Game In Session</div>");
-  // }
 
-  //  checking for player1 and player2
-  // gameroom.on("value", function(snapshot){
+  // firebase.auth().signOut().then(function() {
+  //   // Sign-out successful.
+  //   var user = firebase.auth().currentUser;
 
-  //   if (snapshot.child("player1").exists()){
-  //     console.log(snapshot.val().player1);
-  //     player1 = snapshot.val().player1;
-  //     if ($('#player1info').length){
-  //       $('#player1').html(`<div id='player1info'>${player1.name}</div>`)
-  //       $('#player1').html(`<div id='player1info'>${player1.wins}</div>`)
-  //       $('#player1').html(`<div id='player1info'>${player1.losses}</div>`)
-  //     } else{
-  //       $('#player1').append(`<div id='player1info'>${player1.name}</div>`)
-  //       $('#player1').append(`<div id='player1info'>${player1.wins}</div>`)
-  //       $('#player1').append(`<div id='player1info'>${player1.losses}</div>`)
-  //     }
-  //   }
-  //   if (snapshot.child("player2").exists()){
-  //     console.log(snapshot.val().player2);
-  //     player2 = snapshot.val().player2;
-  //     if ($('#player2info').length){
-  //       $('#player2').html(`<div id='player1info'>${player2.name}</div>`)
-  //       $('#player2').html(`<div id='player1info'>${player2.wins}</div>`)
-  //       $('#player2').html(`<div id='player1info'>${player2.losses}</div>`)
-  //     } else{
-  //       $('#player2').append(`<div id='player2info'>${player2.name}</div>`)
-  //       $('#player2').append(`<div id='player2info'>${player2.wins}</div>`)
-  //       $('#player2').append(`<div id='player2info'>${player2.losses}</div>`)
-  //     }
-  //   }
-                  
-  });
-  
+  //   user.delete().then(function() {
+  //   // User deleted.
+  //   }).catch(function(error) {
+  //   // An error happened.
+  //   });
+
+  // });
 });
